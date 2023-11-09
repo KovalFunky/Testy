@@ -18,23 +18,22 @@ namespace WindowsFormsApp1
             InitializeComponent();
         }
 
-        private static async Task<long> MultiMetod(Label _label1,TextBox _textBox1)
+        private static async Task<long> MultiMetod(Label _label1,TextBox _textBox1,TextBox _textBox2)
         {
+            UpdateControl(_textBox2, $"Task Start  {System.Threading.Thread.CurrentThread.ManagedThreadId}");
             int[] numbers = Enumerable.Range(0, 10).ToArray();
             Task<long> task = Task.Run(() =>
             {
-                //Console.WriteLine($"Task Start  {System.Threading.Thread.CurrentThread.ManagedThreadId}");
-                //_textBox1.Text=($"Task Start  {System.Threading.Thread.CurrentThread.ManagedThreadId}");
                 UpdateControl(_textBox1, $"Task Start  {System.Threading.Thread.CurrentThread.ManagedThreadId}");
                 long total = 0;
                 for (int i = 0; i < numbers.Length; i++)
                 {
                     total += numbers[i]; Thread.Sleep(333);
-                    //_label1.Text =($"Task Working  {System.Threading.Thread.CurrentThread.ManagedThreadId}");
-                    UpdateControl(_label1, $"Task Working  {System.Threading.Thread.CurrentThread.ManagedThreadId}");
+                    
+                    UpdateControl(_label1, $"Task Working  {System.Threading.Thread.CurrentThread.ManagedThreadId}  ->  {total}");
                 }
-                //_label1.Text = ($"Task End  {System.Threading.Thread.CurrentThread.ManagedThreadId}");
-                UpdateControl(_label1, $"Task End  {System.Threading.Thread.CurrentThread.ManagedThreadId}");
+                
+                UpdateControl(_textBox1, $"Task End  {System.Threading.Thread.CurrentThread.ManagedThreadId}");
                 return total;
             });
 
@@ -57,7 +56,7 @@ namespace WindowsFormsApp1
 
         private void button1_Click(object sender, EventArgs e)
         {
-            MultiMetod(label1,textBox1);
+            MultiMetod(label1,textBox1,textBox2);
         }
     }
 }
