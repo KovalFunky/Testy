@@ -24,17 +24,35 @@ namespace WindowsFormsApp1
             Task<long> task = Task.Run(() =>
             {
                 //Console.WriteLine($"Task Start  {System.Threading.Thread.CurrentThread.ManagedThreadId}");
-                _textBox1.Text=($"Task Start  {System.Threading.Thread.CurrentThread.ManagedThreadId}");
+                //_textBox1.Text=($"Task Start  {System.Threading.Thread.CurrentThread.ManagedThreadId}");
+                UpdateControl(_textBox1, $"Task Start  {System.Threading.Thread.CurrentThread.ManagedThreadId}");
                 long total = 0;
                 for (int i = 0; i < numbers.Length; i++)
                 {
-                    total += numbers[i]; Thread.Sleep(333); _label1.Text =($"Task Working  {System.Threading.Thread.CurrentThread.ManagedThreadId}");
+                    total += numbers[i]; Thread.Sleep(333);
+                    //_label1.Text =($"Task Working  {System.Threading.Thread.CurrentThread.ManagedThreadId}");
+                    UpdateControl(_label1, $"Task Working  {System.Threading.Thread.CurrentThread.ManagedThreadId}");
                 }
-                _label1.Text = ($"Task End  {System.Threading.Thread.CurrentThread.ManagedThreadId}");
+                //_label1.Text = ($"Task End  {System.Threading.Thread.CurrentThread.ManagedThreadId}");
+                UpdateControl(_label1, $"Task End  {System.Threading.Thread.CurrentThread.ManagedThreadId}");
                 return total;
             });
 
             return await task;
+        }
+
+        private static void UpdateControl(System.Windows.Forms.Control guiControl, string v)
+        {
+            if (guiControl != null)
+            {
+                if (guiControl.InvokeRequired)
+                {
+                    Action safeWrite = delegate { guiControl.Text = v; };
+                    guiControl.Invoke(safeWrite);
+                }
+
+                guiControl.Text = v;
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
